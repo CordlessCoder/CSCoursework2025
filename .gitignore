@@ -1,0 +1,4 @@
+# Avoid automatically committing rendered PDFs
+**/*.pdf
+# Ignore python bytecode cache files
+**/*.pyc

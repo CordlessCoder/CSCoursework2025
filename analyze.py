@@ -2,6 +2,8 @@
 import pandas as pd
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+import streamlit as st
+import plotly.express as px
 
 
 def read_temperatures():
@@ -78,7 +80,7 @@ mean_temps = (
     .reset_index()
     .drop(columns="Statistic")
 )
-year_mean_diffs = (
+year_means = (
     temperatures.groupby(
         [
             temperatures["Date"].dt.year,
@@ -92,15 +94,15 @@ year_mean_diffs = (
     .reset_index()
     .drop(columns="Statistic")
     .set_index("Date")
-    .diff()[1:]
+    # .diff()[1:]
 )
 # print(year_mean_diffs.corrwith(glacier_mass_changes.Change))
-print(year_mean_diffs, glacier_mass_changes)
+print(year_means, glacier_mass_changes)
 year_mass_change = (
     pd.merge(
-        year_mean_diffs.reset_index(),
+        year_means.reset_index(),
         glacier_mass_changes.reset_index(),
-        left_on=year_mean_diffs.reset_index()["Date"].dt.year,
+        left_on=year_means.reset_index()["Date"].dt.year,
         right_on=glacier_mass_changes.reset_index()["Date"].dt.year,
     )
     .rename(columns={"key_0": "Year", "Change": "Mass lost"})[
@@ -112,8 +114,6 @@ year_mass_change["Mass lost"] = year_mass_change["Mass lost"].apply(lambda x: -x
 corr_temp_diff_to_mass = year_mass_change["Temperature"].corr(
     year_mass_change["Mass lost"]
 )
-import streamlit as st
-import plotly.express as px
 
 
 st.write("##### Cumulative glacier mass change")
@@ -157,7 +157,7 @@ yearly_temp_plot.data[-2].visible = True
 yearly_temp_plot.data[-1].visible = True
 st.plotly_chart(yearly_temp_plot, key=1)
 st.write(
-    f"##### Correlation coefficient between temperature difference and glacier mass lost: {corr_temp_diff_to_mass * 100:.3}%"
+    f"##### Correlation coefficient between temperature and glacier mass lost: {corr_temp_diff_to_mass * 100:.3}%"
 )
 
 fig = make_subplots(2, 1, shared_xaxes=True, shared_yaxes=True, vertical_spacing=0.02)
@@ -165,13 +165,13 @@ fig.add_trace(
     go.Bar(
         x=year_mass_change.index,
         y=year_mass_change["Mass lost"],
-        name="Glacier Mass Lost (Metric tons)",
+        name="Glacier Mass Lost (Metric tonnes)",
     ),
     row=1,
     col=1,
 )
 fig.add_trace(
-    go.Bar(
+    go.Line(
         x=year_mass_change.index,
         y=year_mass_change["Temperature"],
         name="Annual Temperature Difference (C°)",
@@ -179,11 +179,9 @@ fig.add_trace(
         # opacity=0.4,
         # marker_line_color="rgb(8,48,107)",
         # marker_line_width=2,
+        # trendline="lowess",
     ),
     row=2,
     col=1,
 )
 st.plotly_chart(fig)
-
-# print(px.get_trendline_results(yearly_temp_plot))
-# np.poly1d(np.polyfit(x, y, 1))(np.unique(x))

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 from urllib3 import PoolManager, HTTPHeaderDict
 from typing import Optional
-from bs4 import BeautifulSoup
-import urllib
 import re
 import os
 from tqdm import tqdm
+import shutil
 
 pool = PoolManager()
 
@@ -21,36 +20,13 @@ def get_content_length(headers: HTTPHeaderDict) -> Optional[int]:
         return None
 
 
-indirect_sources = [
-    "https://cli.fusio.net/cli/grids_daily/max/",
-    "https://cli.fusio.net/cli/grids_daily/min/",
-]
-direct_sources = ["https://wgms.ch/downloads/DOI-WGMS-FoG-2024-01.zip"]
+direct_sources: dict[str, str] = {
+    "DOI-WGMS-FoG-2024-01.zip": "https://wgms.ch/downloads/DOI-WGMS-FoG-2024-01.zip",
+    "MTM02_Temperature.csv": "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/MTM02/CSV/1.0/en",
+}
 
 
 __link_is_absolute_regex__ = re.compile("^https?://")
-
-
-def link_is_absolute(link: str) -> bool:
-    return __link_is_absolute_regex__.match(link) is not None
-
-
-for source in indirect_sources:
-    with pool.request("GET", source, preload_content=False) as conn:
-        soup = BeautifulSoup(conn, features="html.parser")
-        relative_links = (
-            a.get("href")
-            for a in soup.find_all(
-                "a", attrs={"href": lambda link: not link_is_absolute(link)}
-            )
-        )
-        direct_sources.extend(
-            urllib.parse.urljoin(source, link) for link in relative_links
-        )
-        absolute_links = (
-            a.get("href") for a in soup.find_all("a", attrs={"href": link_is_absolute})
-        )
-        direct_sources.extend(absolute_links)
 
 
 if not os.path.isdir("raw_data"):
@@ -58,17 +34,22 @@ if not os.path.isdir("raw_data"):
     print("Please create it, or navigate to the proper directory.")
     exit(1)
 
-for source in direct_sources:
-    path = "raw_data/" + source.split("/")[-1]
-    if os.path.exists(path):
+for name, source in direct_sources.items():
+    path = "raw_data/" + name
+    if (
+        os.path.exists(path)
+        or name.endswith(".zip")
+        and os.path.isdir("raw_data/" + name[:-4])
+    ):
         print(f"{path} is already downloaded, skipping")
         continue
+
     with (
         pool.request("GET", source, preload_content=False) as conn,
         open(path, "xb") as out,
         tqdm(
             total=get_content_length(conn.headers),
-            desc=source,
+            desc=name,
             unit="B",
             unit_scale=True,
         ) as bar,
@@ -83,3 +64,8 @@ for source in direct_sources:
         except KeyboardInterrupt:
             print(f"Removing incomplete download {path}")
             os.remove(path)
+    if name.endswith(".zip"):
+        print("Found a .zip archive. Extracting")
+        name = name[:-4]
+        shutil.unpack_archive(path, f"raw_data/{name}/", format="zip")
+        os.remove(path)

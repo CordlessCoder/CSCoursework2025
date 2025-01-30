@@ -2,9 +2,23 @@
 #show: doc(
     header: [_Roman Moisieiev's Computer Science Project_],
     theme: "rose-pine",
+    heading_numbering: "1.a",
     // theme: "light",
     // auto_outline: true,
 )
+= Investigation
+
+= Plan & Design
+
+= Create
+This brief was written and typeset using #link("https://github.com/typst/typst")[typst]
+with a custom preamble that can be found under `brief/templates`.
+
+== Progress Log
+The precise timeline of the development of the project is recorded as git commits.
+
+= Evaluation
+
 = Citations
 - WGMS (2024):
     Fluctuations of Glaciers Database.
@@ -15,11 +29,10 @@
     Dataset download link: https://wgms.ch/downloads/DOI-WGMS-FoG-2024-01.zip
 
 - Met Éireann (2021): 
-    Daily air temperatures from 1961 - 2021.
-    Open Data Unit(#link("mailto:opendata@met.ie")), Dublin, Ireland.
+    MTM02 - Temperature 
+    Dr Sam Belton, Dr Grzegorz Głaczyński, Dublin, Ireland.
 
-    https://data.gov.ie/dataset/daily-air-temperatures-from-1961-2021
+    https://data.gov.ie/dataset/mtm02-temperature
 
-    Dataset download links:
-        - https://cli.fusio.net/cli/grids_daily/max/
-        - https://cli.fusio.net/cli/grids_daily/min/
+    Dataset download link: https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/MTM02/CSV/1.0/en
+    

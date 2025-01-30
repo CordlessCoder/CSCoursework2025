@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from urllib3 import PoolManager, HTTPHeaderDict
 from typing import Optional
-import re
 import os
 from tqdm import tqdm
 import shutil
@@ -24,9 +23,6 @@ direct_sources: dict[str, str] = {
     "DOI-WGMS-FoG-2024-01.zip": "https://wgms.ch/downloads/DOI-WGMS-FoG-2024-01.zip",
     "MTM02_Temperature.csv": "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/MTM02/CSV/1.0/en",
 }
-
-
-__link_is_absolute_regex__ = re.compile("^https?://")
 
 
 if not os.path.isdir("raw_data"):

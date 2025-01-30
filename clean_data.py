@@ -8,8 +8,9 @@ def read_temperatures():
             file,
             index_col=["Month", "Statistic Label"],
             parse_dates=["Month"],
-            date_format="%YM%M",
+            date_format="%YM%m",
         )
+        df.index.names = ["Date", "Statistic"]
         df.drop(
             [
                 "TLIST(M1)",
@@ -21,8 +22,11 @@ def read_temperatures():
             axis=1,
             inplace=True,
         )
+        df.rename(columns={"VALUE": "Temperature"}, inplace=True)
         return (
-            df[df["VALUE"].notna()].groupby(["Month", "Statistic Label"]).VALUE.mean()
+            df[df["Temperature"].notna()]
+            .groupby(["Date", "Statistic"])
+            .Temperature.mean()
         )
 
 
@@ -36,13 +40,16 @@ def read_glacier_mass_changes():
                 date_format="%Y",
             )
             .groupby("YEAR")
-            .ANNUAL_BALANCE.mean()
+            .ANNUAL_BALANCE.sum()
         )
-        return df
+        df.index.names = ["Date"]
+        df.name = "Change"
+        # Drop empty data for 2024
+        return df.iloc[:-1]
 
 
 glacier_mass_changes = read_glacier_mass_changes()
-glacier_mass_changes.to_csv("clean_data/glacier_mass_changes.csv")
+glacier_mass_changes.to_csv("clean_data/glacier_mass_changes.csv", date_format="%Y %m")
 
 temperatures = read_temperatures()
-temperatures.to_csv("clean_data/temperatures.csv")
+temperatures.to_csv("clean_data/temperatures.csv", date_format="%Y %m")

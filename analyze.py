@@ -132,6 +132,9 @@ temp_plot = px.scatter(
     color="Statistic",
     trendline="lowess",
 )
+temp_plot.update_traces(visible="legendonly")
+temp_plot.data[-2].visible = True
+temp_plot.data[-1].visible = True
 st.plotly_chart(temp_plot, key=2)
 st.write("##### Ireland Air Temperature(annual averages)")
 yearly_temp_plot = px.scatter(
@@ -149,9 +152,12 @@ yearly_temp_plot = px.scatter(
     color="Statistic",
     trendline="lowess",
 )
+yearly_temp_plot.update_traces(visible="legendonly")
+yearly_temp_plot.data[-2].visible = True
+yearly_temp_plot.data[-1].visible = True
 st.plotly_chart(yearly_temp_plot, key=1)
 st.write(
-    f"##### Correlation coefficient between temperature difference and glacier mass: {corr_temp_diff_to_mass * 100:.3}%"
+    f"##### Correlation coefficient between temperature difference and glacier mass lost: {corr_temp_diff_to_mass * 100:.3}%"
 )
 
 fig = make_subplots(2, 1, shared_xaxes=True, shared_yaxes=True, vertical_spacing=0.02)

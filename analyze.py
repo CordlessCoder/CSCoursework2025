@@ -3,7 +3,7 @@ import pandas as pd
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
-from jinja2 import Template
+# from jinja2 import Template
 # import streamlit as st
 
 
@@ -161,16 +161,34 @@ print("Rendering HTML.")
 
 
 def render(fig: go.Figure) -> str:
-    return fig.to_html(full_html=False, include_plotlyjs="cdn")
+    return fig.to_html(full_html=False, include_plotlyjs=False)
 
 
-jinja_data = {
-    "glacier_mass_temp_change_combined": render(glacier_mass_temp_change_combined),
-    "yearly_temp_plot": render(yearly_temp_plot),
-    "monthly_temp_plot": render(monthly_temp_plot),
+def render_to_file(fig: go.Figure, name: str):
+    with open(
+        f"backend/content/template_data/{name}.html", "w", encoding="utf-8"
+    ) as output_file:
+        output_file.write(render(fig))
+
+
+graphs = {
+    "glacier_mass_temp_change_combined": glacier_mass_temp_change_combined,
+    "yearly_temp_plot": yearly_temp_plot,
+    "monthly_temp_plot": monthly_temp_plot,
 }
 
-with open("static/index.html", "w", encoding="utf-8") as output_file:
-    with open("templates/index.html") as template_file:
-        j2_template = Template(template_file.read())
-        output_file.write(j2_template.render(jinja_data))
+for name, fig in graphs.items():
+    render_to_file(fig, name)
+
+print("Rendered HTML plots to the template_data/ directory")
+
+# jinja_data = {
+#     "glacier_mass_temp_change_combined": render(glacier_mass_temp_change_combined),
+#     "yearly_temp_plot": render(yearly_temp_plot),
+#     "monthly_temp_plot": render(monthly_temp_plot),
+# }
+#
+# with open("static/index.html", "w", encoding="utf-8") as output_file:
+#     with open("templates/index.html") as template_file:
+#         j2_template = Template(template_file.read())
+#         output_file.write(j2_template.render(jinja_data))

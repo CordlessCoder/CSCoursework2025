@@ -5,3 +5,11 @@
 
 raw_data/*
 !raw_data/.keep
+
+# Ignore compiled Rust code
+**/target
+**/Cargo.lock
+
+# Ignore tooling cache
+**/.sqlx
+**/.mypy_cache

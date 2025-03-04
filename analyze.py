@@ -124,12 +124,14 @@ yearly_temp_plot.update_traces(visible="legendonly")
 yearly_temp_plot.data[-2].visible = True
 yearly_temp_plot.data[-1].visible = True
 # st.plotly_chart(yearly_temp_plot, key=1)
-# st.write(
-#     f"##### Correlation coefficient between temperature and glacier mass lost: {corr_temp_diff_to_mass * 100:.4}%"
-# )
 
 glacier_mass_temp_change_combined = make_subplots(
-    2, 1, shared_xaxes=True, shared_yaxes=True, vertical_spacing=0.02
+    # 2,
+    # 1,
+    # shared_xaxes=True,
+    # shared_yaxes=True,
+    # vertical_spacing=0.02,
+    specs=[[{"secondary_y": True}]],
 )
 glacier_mass_temp_change_combined.add_trace(
     go.Bar(
@@ -137,22 +139,22 @@ glacier_mass_temp_change_combined.add_trace(
         y=year_mass_change["Mass lost"],
         name="Glacier Mass Lost (Metric tonnes)",
     ),
-    row=1,
-    col=1,
+    secondary_y=False,
 )
 glacier_mass_temp_change_combined.add_trace(
     go.Scatter(
         x=year_mass_change.index,
         y=year_mass_change["Temperature"],
-        name="Annual Temperature Difference (C°)",
-        # marker_color="green",
-        # opacity=0.4,
-        # marker_line_color="rgb(8,48,107)",
-        # marker_line_width=2,
-        # trendline="lowess",
+        name="Mean Annual Temperature (C°)",
     ),
-    row=2,
-    col=1,
+    secondary_y=True,
+)
+glacier_mass_temp_change_combined.update_yaxes(
+    title_text="Glacier Mass Lost",
+    secondary_y=False,
+)
+glacier_mass_temp_change_combined.update_yaxes(
+    title_text="Temperature (C°)", secondary_y=True
 )
 # st.plotly_chart(glacier_mass_temp_change_combined)
 
@@ -160,27 +162,35 @@ glacier_mass_temp_change_combined.add_trace(
 print("Rendering HTML.")
 
 
-def render(fig: go.Figure) -> str:
-    return fig.to_html(full_html=False, include_plotlyjs=False)
+# def render_html(fig: go.Figure) -> str:
+#     return fig.to_html(full_html=False, include_plotlyjs=False)
+def export_json(fig: go.Figure) -> str:
+    return fig.to_json()
 
 
-def render_to_file(fig: go.Figure, name: str):
-    with open(
-        f"backend/content/template_data/{name}.html", "w", encoding="utf-8"
-    ) as output_file:
-        output_file.write(render(fig))
+def write_to_file(data, name: str):
+    with open(f"backend/content/{name}", "w", encoding="utf-8") as output_file:
+        output_file.write(data)
 
 
 graphs = {
-    "glacier_mass_temp_change_combined": glacier_mass_temp_change_combined,
-    "yearly_temp_plot": yearly_temp_plot,
-    "monthly_temp_plot": monthly_temp_plot,
+    "static/glacier_mass_temp_change_combined.json": glacier_mass_temp_change_combined,
+    "static/yearly_temp_plot.json": yearly_temp_plot,
+    "static/monthly_temp_plot.json": monthly_temp_plot,
 }
 
+# render plots
 for name, fig in graphs.items():
-    render_to_file(fig, name)
+    write_to_file(export_json(fig), name)
 
-print("Rendered HTML plots to the template_data/ directory")
+
+# Record correlation coefficient
+write_to_file(
+    f"Correlation coefficient between temperature and glacier mass lost: {corr_temp_diff_to_mass * 100:.4}%",
+    "template_data/color_temp_diff_to_mass.txt",
+)
+
+print("Exported plots to the backend/content/ directory")
 
 # jinja_data = {
 #     "glacier_mass_temp_change_combined": render(glacier_mass_temp_change_combined),

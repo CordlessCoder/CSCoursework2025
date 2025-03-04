@@ -2,21 +2,21 @@
 
 <html>
   <head>
-    <meta charset="utf-8" />
-    <!--It is necessary to use the UTF-8 encoding with plotly graphics to get e.g. negative signs to render correctly -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {{> common_head}}
     <script
       charset="utf-8"
       src="https://cdn.plot.ly/plotly-3.0.0.min.js"
     ></script>
+    <script type="module" src="plot_data.js"></script>
   </head>
 
   <body>
-    <h1>Here's a Plotly graph!</h1>
+    {{> header}}
 
-    {{{ glacier_mass_temp_change_combined }}}<br />
-    {{{ monthly_temp_plot }}} <br />{{{ yearly_temp_plot }}}
-
-    <p>And here's some text after the graph.</p>
+    <div id="monthly_temp_plot"></div>
+    <div id="yearly_temp_plot"></div>
+    <h3>{{color_temp_diff_to_mass}}</h3>
+    <div id="glacier_mass_temp_change_combined_plot"></div>
+    {{> footer}}
   </body>
 </html>

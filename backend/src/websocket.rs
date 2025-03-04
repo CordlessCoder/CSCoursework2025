@@ -1,16 +1,14 @@
-use std::{net::SocketAddr, ops::ControlFlow, sync::Arc, time::Duration};
+use std::{net::SocketAddr, sync::Arc};
 
 use axum::{
-    body::Bytes,
     extract::{
         ConnectInfo, State, WebSocketUpgrade,
-        ws::{CloseFrame, Message, Utf8Bytes, WebSocket},
+        ws::{Message, Utf8Bytes, WebSocket},
     },
     response::IntoResponse,
 };
 use axum_extra::{TypedHeader, headers};
-use futures::{SinkExt, StreamExt};
-use tokio::{select, time};
+use tokio::select;
 use tracing::{debug, trace};
 
 use crate::state::AppState;

@@ -1,12 +1,11 @@
-use std::{fmt::Debug, sync::Arc};
+use std::fmt::Debug;
 
 use axum::{Json, extract::ws::Utf8Bytes, http::StatusCode, response::IntoResponse};
-use futures::{Stream, StreamExt, TryStreamExt};
 use serde::{Deserialize, Serialize};
 use sqlx::{PgPool, postgres::PgPoolOptions};
-use tokio::sync::{broadcast, watch};
+use tokio::sync::broadcast;
 
-use crate::models::{Bucket, Histogram, Reply, Statistics};
+use crate::models::{Bucket, Histogram, Reply};
 use thiserror::Error;
 
 pub struct AppState {
@@ -57,18 +56,22 @@ impl AppState {
         .unwrap();
         self.reply_notifications
             .0
-            .send(Utf8Bytes::from(serde_json::to_string(reply).unwrap()));
+            .send(Utf8Bytes::from(serde_json::to_string(reply).unwrap()))
+            .unwrap();
     }
-    pub async fn get_replies(&self) -> Vec<Reply> {
-        sqlx::query!("SELECT * FROM replies")
-            .map(|r| Reply {
-                age: r.age.try_into().unwrap_or(0),
-                name: r.name,
-                agree: r.agree,
-            })
-            .fetch_all(&self.pool)
-            .await
-            .unwrap()
+    pub async fn get_replies(&self, latest: u32) -> Vec<Reply> {
+        sqlx::query!(
+            "SELECT * FROM replies ORDER BY id DESC LIMIT $1",
+            latest as i64
+        )
+        .map(|r| Reply {
+            age: r.age.try_into().unwrap_or(0),
+            name: r.name,
+            agree: r.agree,
+        })
+        .fetch_all(&self.pool)
+        .await
+        .unwrap()
     }
     pub async fn get_age_histogram(
         &self,
@@ -88,7 +91,6 @@ impl AppState {
             (age_buckets - 1) as i32,
         )
         .map(|r| {
-            dbg!(&r);
             let bucket = r.width_bucket.unwrap_or(0) as u32;
             let bucket_width = (age_max - age_min) as f64 / (age_buckets - 2) as f64;
             dbg!(bucket_width);

@@ -1,16 +1,18 @@
-#![allow(unused)]
 use axum::{
-    Json, Router,
-    extract::{ConnectInfo, Query, State, WebSocketUpgrade},
-    http::StatusCode,
+    Form, Json, Router,
+    extract::{Query, State},
     response::{Html, IntoResponse},
-    routing::{any, get},
+    routing::{any, get, post},
 };
-use axum_extra::TypedHeader;
+use handlebars::Handlebars;
 use models::Reply;
+use serde::{Deserialize, Serialize};
 use state::{AgeHistogramOptions, AppState};
-use std::{fmt::Display, net::SocketAddr, sync::Arc};
-use tower_http::trace::{DefaultMakeSpan, TraceLayer};
+use std::{net::SocketAddr, sync::Arc};
+use tower_http::{
+    services::ServeDir,
+    trace::{DefaultMakeSpan, TraceLayer},
+};
 use tracing::level_filters::LevelFilter;
 mod models;
 mod state;
@@ -19,8 +21,6 @@ mod websocket;
 
 #[tokio::main]
 async fn main() {
-    let data_page = template::render_data_page().await;
-
     let state = AppState::initialize().await;
     let state = Arc::new(state);
 
@@ -31,13 +31,26 @@ async fn main() {
         .with_line_number(true)
         .init();
 
+    let mut handlebars = Handlebars::new();
+    template::register_partials(&mut handlebars).await;
     let app = Router::new()
-        .route("/", get(root))
-        .route("/data", get(Html(data_page)))
-        .route("/reply", get(add_reply))
-        .route("/list_replies", get(list_replies))
+        .route(
+            "/",
+            get(Html(template::render_page(&mut handlebars, "index").await)),
+        )
+        .route(
+            "/data",
+            get(Html(template::render_page(&mut handlebars, "data").await)),
+        )
+        .route(
+            "/survey",
+            get(Html(template::render_page(&mut handlebars, "survey").await)),
+        )
+        .route("/reply", post(add_reply))
+        .route("/list_replies", get(list_latest_replies))
         .route("/stats", get(stats))
         .route("/ws", any(websocket::ws_handshake))
+        .fallback_service(ServeDir::new("content/static/"))
         .layer(
             TraceLayer::new_for_http()
                 .make_span_with(DefaultMakeSpan::default().include_headers(true)),
@@ -54,15 +67,36 @@ async fn main() {
     .unwrap();
 }
 
-async fn root() -> impl IntoResponse {
-    "Hello, world!"
+#[derive(Debug, Deserialize, Serialize)]
+struct ReplyForm {
+    age: u8,
+    name: String,
+    agree: Option<String>,
 }
 
-async fn add_reply(Query(reply): Query<Reply>, State(state): State<Arc<AppState>>) {
+async fn add_reply(State(state): State<Arc<AppState>>, Form(reply): Form<ReplyForm>) {
+    let ReplyForm { age, name, agree } = reply;
+    let reply = Reply {
+        age,
+        name,
+        agree: agree.is_some(),
+    };
     state.add_reply(&reply).await;
 }
-async fn list_replies(State(state): State<Arc<AppState>>) -> impl IntoResponse {
-    Json(state.get_replies().await)
+#[derive(Debug, Serialize, Deserialize)]
+struct ReplyLimit {
+    #[serde(default = "default_latest")]
+    latest: u8,
+}
+fn default_latest() -> u8 {
+    5
+}
+
+async fn list_latest_replies(
+    State(state): State<Arc<AppState>>,
+    Query(ReplyLimit { latest }): Query<ReplyLimit>,
+) -> impl IntoResponse {
+    Json(state.get_replies(latest as u32).await)
 }
 
 async fn stats(

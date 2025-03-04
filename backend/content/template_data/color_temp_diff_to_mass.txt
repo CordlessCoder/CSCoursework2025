@@ -1,0 +1,1 @@
+Correlation coefficient between temperature and glacier mass lost: 56.78%

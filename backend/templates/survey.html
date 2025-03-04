@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html>
+  <head>
+    {{> common_head}}
+    <script src="form.js"></script>
+  </head>
+
+  <body>
+    {{> header}}
+    <div class="hero">
+      <div>
+        <h2>
+          Thanks for your time!<br />
+          <span class="color-gradient"> What did you think?</span>
+        </h2>
+      </div>
+      <form
+        class="hero-img secondary-container"
+        onsubmit="return formSubmit(event)"
+      >
+        <div class="labeled-input">
+          <label for="name">Tell us your name</label>
+          <input type="text" id="name" name="name" />
+        </div>
+        <div class="labeled-input">
+          <label for="age">Enter your age</label>
+          <input type="number" name="age" min="13" max="150" />
+        </div>
+
+        <div class="input-group">
+          <input type="checkbox" id="agree" name="agree" />
+          <label for="agree">Do you agree with my findings?</label>
+        </div>
+        <input type="submit" value="Submit" class="secondary-button" />
+      </form>
+    </div>
+    <h1>Let's see how others are responding!</h1>
+    {{> footer}}
+  </body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT width_bucket(age, $1, $2, $3), count(*) FROM replies group by 1 order by 1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "width_bucket",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "count",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Float8",
+        "Float8",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      null,
+      null
+    ]
+  },
+  "hash": "959eee10839a004bc75be9323a7689ccc847b813da3926cfed9faba27fa760fe"
+}

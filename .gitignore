@@ -11,5 +11,4 @@ raw_data/*
 **/Cargo.lock
 
 # Ignore tooling cache
-**/.sqlx
 **/.mypy_cache

@@ -87,7 +87,6 @@ impl AppState {
         .map(|r| {
             let bucket = r.width_bucket.unwrap_or(0) as u32;
             let bucket_width = (age_max - age_min) as f64 / (age_buckets - 2) as f64;
-            bucket_width;
             Bucket {
                 count: r.count.unwrap_or(0) as u64,
                 start: (bucket != 0).then(|| {

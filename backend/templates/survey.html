@@ -15,7 +15,7 @@
           <span class="color-gradient"> What did you think?</span>
         </h2>
       </div>
-      <form class="hero-img secondary-container" id="reply-form">
+      <form class="hero-img primary-container" id="reply-form">
         <div class="labeled-input">
           <label for="name">Tell us your name</label>
           <input type="text" id="name" name="name" />
@@ -38,26 +38,24 @@
       </form>
     </div>
     <h1>Let's see how others are responding!</h1>
-    <div class="primary-container">
-      <p class="subtitle">
-        There <span id="viewer_count_to_be">are</span> currently
-        <span id="viewer_count">UNKNOWN visitors</span> on this page.
-      </p>
-      <table id="replies" class="mintable">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Agrees?</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <p class="subtitle">
-        The above table updates in real time with added entries. <br />
-        Try it, it even works if you reply on another device!
-      </p>
-    </div>
+    <p class="subtitle">
+      There <span id="viewer_count_to_be">are</span> currently
+      <span id="viewer_count">UNKNOWN visitors</span> on this page.
+    </p>
+    <table id="replies" class="mintable secondary-container">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Agrees?</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p class="subtitle">
+      The above table updates in real time with added entries. <br />
+      Try it, it even works if you reply on another device!
+    </p>
     {{> footer}}
   </body>
 </html>

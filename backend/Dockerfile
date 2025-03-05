@@ -17,9 +17,10 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=$SCCACHE_DIR,sharing=locked \
     cargo chef cook --release --recipe-path recipe.json
 COPY . .
+COPY .sqlx .
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=$SCCACHE_DIR,sharing=locked \
-    cargo build --release
+    SQLX_OFFLINE=true cargo build --release
 
 # Use Alpine Linux as the base image for the final stage
 # FROM alpine:latest AS runner

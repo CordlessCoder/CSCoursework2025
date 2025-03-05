@@ -22,6 +22,8 @@ services:
     ports:
       - 8080:3000
     restart: unless-stopped
+    environment:
+      DATABASE_URL: postgres://cscoursework:RomanMoisieiev@db/app
     develop:
       watch:
         - action: rebuild

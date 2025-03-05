@@ -1,4 +1,6 @@
-let socket = new WebSocket(`ws://${window.location.host}/notification_ws`);
+let socket = new WebSocket(
+  `ws${window.location.href.startsWith("https") ? "s" : ""}://${window.location.host}/notification_ws`,
+);
 
 socket.onopen = function (e) {
   console.log(`Connection established ${e}`);

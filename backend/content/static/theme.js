@@ -2,11 +2,34 @@ let enabledAnimation = false;
 
 window.addEventListener("DOMContentLoaded", function () {
   // Set theme at startup
-  const currentTheme = localStorage.getItem("theme")
+  const current_theme = localStorage.getItem("theme")
     ? localStorage.getItem("theme")
-    : "light";
-  document.documentElement.setAttribute("theme", currentTheme);
+    : "system";
   const themeButtons = document.querySelectorAll("div[id=theme-toggle]");
+  let system_theme = "light";
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  ) {
+    system_theme = "dark";
+  }
+  localStorage.setItem("theme", current_theme);
+  if (current_theme == "system") {
+    document.documentElement.setAttribute("theme", system_theme);
+  } else {
+    document.documentElement.setAttribute("theme", current_theme);
+  }
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (event) => {
+      system_theme = event.matches ? "dark" : "light";
+      const current_theme = localStorage.getItem("theme")
+        ? localStorage.getItem("theme")
+        : "system";
+      if (current_theme == "system") {
+        document.documentElement.setAttribute("theme", system_theme);
+      }
+    });
 
   themeButtons.forEach((btn) => {
     btn.addEventListener("click", (_) => {
@@ -18,12 +41,10 @@ window.addEventListener("DOMContentLoaded", function () {
       }
       let currentTheme = localStorage.getItem("theme")
         ? localStorage.getItem("theme")
-        : "light";
+        : system_theme;
       let newtheme;
       if (currentTheme == "light") {
         newtheme = "dark";
-      } else if (currentTheme == "dark") {
-        newtheme = "light";
       } else {
         newtheme = "light";
       }

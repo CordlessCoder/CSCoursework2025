@@ -1,8 +1,12 @@
 async function getreplies() {
   let reply_fetch = fetch("./list_replies?latest=5").then((res) => res.json());
   let reply_table = document.getElementById("replies");
+  let row_count = reply_table.getElementsByTagName("tr").length;
   let replies = await reply_fetch;
   console.log("Loaded replies", replies);
+  while (row_count-- > 1) {
+    reply_table.deleteRow(1);
+  }
   for (let index = replies.length - 1; index >= 0; index--) {
     let data = replies[index];
     let row = reply_table.insertRow(1);
@@ -129,20 +133,5 @@ window.addEventListener("DOMContentLoaded", async function () {
     );
     return false;
   };
-  let reply_table = document.getElementById("replies");
-  let replies = await reply_fetch;
-  console.log("Loaded replies", replies);
-  for (let index = replies.length - 1; index >= 0; index--) {
-    let data = replies[index];
-    let row = reply_table.insertRow(1);
-    let [cell0, cell1, cell2] = [
-      row.insertCell(0),
-      row.insertCell(1),
-      row.insertCell(2),
-    ];
-    cell0.innerText = data.name;
-    cell1.innerText = data.age;
-    cell2.innerText = data.agree ? "Yes" : "No";
-  }
   await first_replies;
 });

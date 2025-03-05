@@ -1,64 +1,68 @@
-let socket = new WebSocket(
-  `ws${window.location.href.startsWith("https") ? "s" : ""}://${window.location.host}/notification_ws`,
-);
+function startWebsocket() {
+  let socket = new WebSocket(
+    `ws${window.location.href.startsWith("https") ? "s" : ""}://${window.location.host}/notification_ws`,
+  );
 
-socket.onopen = function (e) {
-  console.log(`Connection established ${e}`);
-};
+  socket.onopen = function (e) {
+    console.log(`Connection established ${e}`);
+  };
 
-socket.onmessage = function (event) {
-  console.log(`[message] Data received from server: ${event.data}`);
-  let data = JSON.parse(event.data);
-  console.log("[message] Parsed data", data);
-  if (data["viewers"]) {
-    let viewers = data.viewers;
-    console.log(`Viewer count update: ${viewers}`);
-    let count = document.getElementById("viewer_count");
-    let to_be = document.getElementById("viewer_count_to_be");
-    if (viewers == 1) {
-      count.innerText = `1 visitor`;
-      to_be.innerText = "is";
+  socket.onmessage = function (event) {
+    console.log(`[message] Data received from server: ${event.data}`);
+    let data = JSON.parse(event.data);
+    console.log("[message] Parsed data", data);
+    if (data["viewers"]) {
+      let viewers = data.viewers;
+      console.log(`Viewer count update: ${viewers}`);
+      let count = document.getElementById("viewer_count");
+      let to_be = document.getElementById("viewer_count_to_be");
+      if (viewers == 1) {
+        count.innerText = `1 visitor`;
+        to_be.innerText = "is";
+      } else {
+        count.innerText = `${viewers} visitors`;
+        to_be.innerText = "are";
+      }
+    } else if (data["name"]) {
+      let name = data.name;
+      let age = data.age;
+      let agree = data.agree;
+      console.log("New reply", name, age, agree);
+      let reply_table = document.getElementById("replies");
+      let row_count = reply_table.getElementsByTagName("tr").length;
+      if (row_count >= 5) {
+        reply_table.deleteRow(5);
+      }
+      let row = reply_table.insertRow(1);
+      let [cell0, cell1, cell2] = [
+        row.insertCell(0),
+        row.insertCell(1),
+        row.insertCell(2),
+      ];
+      cell0.innerText = name;
+      cell1.innerText = age;
+      cell2.innerText = agree ? "Yes" : "No";
+    }
+  };
+
+  socket.onerror = function (error) {
+    console.log("WebSocket error", error);
+  };
+  socket.onclose = function (event) {
+    if (event.wasClean) {
+      console.log(
+        `[close] WebSocket connection closed cleanly, code=${event.code} reason=${event.reason}`,
+      );
     } else {
-      count.innerText = `${viewers} visitors`;
-      to_be.innerText = "are";
+      // e.g. server process killed or network down
+      // event.code is usually 1006 in this case
+      console.log("[close] WebSocket connection died");
     }
-  } else if (data["name"]) {
-    let name = data.name;
-    let age = data.age;
-    let agree = data.agree;
-    console.log("New reply", name, age, agree);
-    let reply_table = document.getElementById("replies");
-    let row_count = reply_table.getElementsByTagName("tr").length;
-    if (row_count >= 5) {
-      reply_table.deleteRow(5);
-    }
-    let row = reply_table.insertRow(1);
-    let [cell0, cell1, cell2] = [
-      row.insertCell(0),
-      row.insertCell(1),
-      row.insertCell(2),
-    ];
-    cell0.innerText = name;
-    cell1.innerText = age;
-    cell2.innerText = agree ? "Yes" : "No";
-  }
-};
-
-socket.onclose = function (event) {
-  if (event.wasClean) {
-    console.log(
-      `[close] WebSocket connection closed cleanly, code=${event.code} reason=${event.reason}`,
-    );
-  } else {
-    // e.g. server process killed or network down
-    // event.code is usually 1006 in this case
-    console.log("[close] WebSocket connection died");
-  }
-};
-
-socket.onerror = function (error) {
-  console.log("WebSocket error", error);
-};
+    // connection closed, discard old websocket and create a new one in 5s
+    ws = null;
+    setTimeout(startWebsocket, 5000);
+  };
+}
 
 let reply_fetch = fetch("./list_replies?latest=5").then((res) => res.json());
 window.addEventListener("DOMContentLoaded", async function () {

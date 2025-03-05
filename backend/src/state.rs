@@ -87,15 +87,15 @@ impl AppState {
         .map(|r| {
             let bucket = r.width_bucket.unwrap_or(0) as u32;
             let bucket_width = (age_max - age_min) as f64 / (age_buckets - 2) as f64;
-            dbg!(bucket_width);
-            dbg!(Bucket {
+            bucket_width;
+            Bucket {
                 count: r.count.unwrap_or(0) as u64,
-                start: (bucket != 0).then(
-                    || age_min as f64 + bucket_width * (bucket - 1).min(age_buckets - 2) as f64
-                ),
+                start: (bucket != 0).then(|| {
+                    age_min as f64 + bucket_width * (bucket - 1).min(age_buckets - 2) as f64
+                }),
                 end: (bucket != age_buckets)
                     .then_some(age_min as f64 + bucket_width * bucket as f64),
-            })
+            }
         })
         .fetch_all(&self.pool)
         .await

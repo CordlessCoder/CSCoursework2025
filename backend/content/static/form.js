@@ -1,3 +1,22 @@
+async function getreplies() {
+  let reply_fetch = fetch("./list_replies?latest=5").then((res) => res.json());
+  let reply_table = document.getElementById("replies");
+  let replies = await reply_fetch;
+  console.log("Loaded replies", replies);
+  for (let index = replies.length - 1; index >= 0; index--) {
+    let data = replies[index];
+    let row = reply_table.insertRow(1);
+    let [cell0, cell1, cell2] = [
+      row.insertCell(0),
+      row.insertCell(1),
+      row.insertCell(2),
+    ];
+    cell0.innerText = data.name;
+    cell1.innerText = data.age;
+    cell2.innerText = data.agree ? "Yes" : "No";
+  }
+}
+
 function startWebsocket() {
   let socket = new WebSocket(
     `ws${window.location.href.startsWith("https") ? "s" : ""}://${window.location.host}/notification_ws`,
@@ -59,12 +78,15 @@ function startWebsocket() {
       console.log("[close] WebSocket connection died");
     }
     // connection closed, discard old websocket and create a new one in 5s
-    ws = null;
+    socket = null;
     setTimeout(startWebsocket, 5000);
+    // refetch replies
+    setTimeout(getreplies, 5000);
   };
 }
+startWebsocket();
 
-let reply_fetch = fetch("./list_replies?latest=5").then((res) => res.json());
+let first_replies = getreplies();
 window.addEventListener("DOMContentLoaded", async function () {
   let form_name = document.getElementById("name");
   let form_age = document.getElementById("age");
@@ -122,4 +144,5 @@ window.addEventListener("DOMContentLoaded", async function () {
     cell1.innerText = data.age;
     cell2.innerText = data.agree ? "Yes" : "No";
   }
+  await first_replies;
 });

@@ -31,13 +31,7 @@ impl AppState {
             .connect(&db_url)
             .await
             .unwrap();
-        // let mut reply_notifications = watch::channel(Reply {
-        //     age: 255,
-        //     name: "John".to_string(),
-        //     agree: true,
-        // });
-        // reply_notifications.1.mark_unchanged();
-        let reply_notifications = broadcast::channel(1);
+        let reply_notifications = broadcast::channel(32);
         AppState {
             pool,
             reply_notifications,

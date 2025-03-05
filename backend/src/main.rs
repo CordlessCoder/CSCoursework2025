@@ -1,6 +1,7 @@
 use axum::{
-    Form, Json, Router,
+    Json, Router,
     extract::{Query, State},
+    http::StatusCode,
     response::{Html, IntoResponse},
     routing::{any, get, post},
 };
@@ -49,7 +50,7 @@ async fn main() {
         .route("/reply", post(add_reply))
         .route("/list_replies", get(list_latest_replies))
         .route("/stats", get(stats))
-        .route("/ws", any(websocket::ws_handshake))
+        .route("/notification_ws", any(websocket::ws_handshake))
         .fallback_service(ServeDir::new("content/static/"))
         .layer(
             TraceLayer::new_for_http()
@@ -67,21 +68,15 @@ async fn main() {
     .unwrap();
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-struct ReplyForm {
-    age: u8,
-    name: String,
-    agree: Option<String>,
-}
-
-async fn add_reply(State(state): State<Arc<AppState>>, Form(reply): Form<ReplyForm>) {
-    let ReplyForm { age, name, agree } = reply;
-    let reply = Reply {
-        age,
-        name,
-        agree: agree.is_some(),
-    };
+async fn add_reply(
+    State(state): State<Arc<AppState>>,
+    Query(reply): Query<Reply>,
+) -> impl IntoResponse {
+    if reply.name.len() > 80 {
+        return (StatusCode::NOT_ACCEPTABLE, "Name cannot be this long").into_response();
+    }
     state.add_reply(&reply).await;
+    ().into_response()
 }
 #[derive(Debug, Serialize, Deserialize)]
 struct ReplyLimit {

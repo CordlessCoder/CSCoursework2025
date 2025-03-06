@@ -21,6 +21,7 @@ window.plotting = {
   },
 };
 let data_callback = (id, data) => {
+  console.log(id, data);
   let draw = () =>
     Plotly.react(
       id,
@@ -36,12 +37,17 @@ window.addEventListener("DOMContentLoaded", async function () {
   await fetch("graphs_combined.json")
     .then((res) => res.json())
     .then((data) => {
-      Object.keys(data)
+      let keys = Array.from(Object.keys(data));
+      keys
         // Needed to get around a bug which breaks drawing graphs
         // when they're drawn in a pathological order
-        .sort((a, b) => a < b)
-        .forEach((name) => {
-          data_callback(name, data[name]);
+        .sort((a, b) => {
+          return a > b ? -1 : a < b ? 1 : 0;
         });
+
+      console.log(keys);
+      keys.forEach((name) => {
+        data_callback(name, data[name]);
+      });
     });
 });

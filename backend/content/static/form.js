@@ -23,7 +23,7 @@ let data_callback = (id, data, redraw) => {
   window.plotting.draw_callbacks[id] = draw;
 };
 
-let width = window.screen.width;
+let width = window.innerWidth;
 let wide = () => width >= 1100;
 
 const AGE_MIN = 15;
@@ -84,7 +84,7 @@ async function getreplies() {
         ];
       },
       layout: () => {
-        width = window.screen.width;
+        width = window.innerWidth;
         return {
           // colorway: ["#f88a9e", "#92D7FF"],
           colorway: ["#ae66fd", "#7680ff"],
@@ -130,7 +130,8 @@ async function getreplies() {
     },
     () => {
       let old_wide = wide();
-      width = window.screen.width;
+      width = window.innerWidth;
+      console.log(width);
       return old_wide != wide();
     },
   );

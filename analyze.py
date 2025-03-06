@@ -3,8 +3,6 @@ import pandas as pd
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
-# from jinja2 import Template
-# import streamlit as st
 
 
 def read_temperatures():
@@ -63,7 +61,6 @@ year_means = (
     .reset_index()
     .drop(columns="Statistic")
     .set_index("Date")
-    # .diff()[1:]
 )
 year_mass_change = (
     pd.merge(
@@ -84,13 +81,6 @@ corr_temp_diff_to_mass = year_mass_change["Temperature"].corr(
 
 
 print("Building figures.")
-# st.write("##### Cumulative glacier mass change")
-# st.line_chart(
-#     glacier_mass_changes.set_index("Date").cumsum(),
-#     x_label="Year",
-#     y_label="Total mass change",
-# )
-# st.write("##### Ireland Air Temperature")
 monthly_temp_plot = px.scatter(
     temperatures.reset_index().rename(
         columns={"Date": "Year", "Temperature": "Temperature (C°)"}
@@ -106,8 +96,6 @@ monthly_temp_plot.data[-1].visible = True
 monthly_temp_plot.update_layout(
     legend=dict(orientation="h", y=1, yanchor="bottom", xanchor="left", x=0)
 )
-# st.plotly_chart(temp_plot, key=2)
-# st.write("##### Ireland Air Temperature(annual averages)")
 yearly_temp_plot = px.scatter(
     temperatures.groupby(
         [
@@ -129,14 +117,8 @@ yearly_temp_plot.update_layout(
 )
 yearly_temp_plot.data[-2].visible = True
 yearly_temp_plot.data[-1].visible = True
-# st.plotly_chart(yearly_temp_plot, key=1)
 
 glacier_mass_temp_change_combined = make_subplots(
-    # 2,
-    # 1,
-    # shared_xaxes=True,
-    # shared_yaxes=True,
-    # vertical_spacing=0.02,
     specs=[[{"secondary_y": True}]],
 )
 glacier_mass_temp_change_combined.add_trace(
@@ -165,14 +147,11 @@ glacier_mass_temp_change_combined.update_yaxes(
 glacier_mass_temp_change_combined.update_yaxes(
     title_text="Temperature (C°)", secondary_y=True
 )
-# st.plotly_chart(glacier_mass_temp_change_combined)
 
 
 print("Rendering HTML.")
 
 
-# def render_html(fig: go.Figure) -> str:
-#     return fig.to_html(full_html=False, include_plotlyjs=False)
 def export_json(fig: go.Figure) -> str:
     return fig.to_json()
 
@@ -200,14 +179,3 @@ write_to_file(
 )
 
 print("Exported plots to the backend/content/ directory")
-
-# jinja_data = {
-#     "glacier_mass_temp_change_combined": render(glacier_mass_temp_change_combined),
-#     "yearly_temp_plot": render(yearly_temp_plot),
-#     "monthly_temp_plot": render(monthly_temp_plot),
-# }
-#
-# with open("static/index.html", "w", encoding="utf-8") as output_file:
-#     with open("templates/index.html") as template_file:
-#         j2_template = Template(template_file.read())
-#         output_file.write(j2_template.render(jinja_data))

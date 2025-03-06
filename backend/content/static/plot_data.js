@@ -21,7 +21,6 @@ window.plotting = {
   },
 };
 let data_callback = (id, data) => {
-  console.log(data);
   let draw = () =>
     Plotly.react(
       id,

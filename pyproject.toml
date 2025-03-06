@@ -1,0 +1,14 @@
+[project]
+name = "cscoursework"
+authors = [{ name = "Roman Moisieiev", email = "roman@vm.net.ua" }]
+version = "0.1.0"
+description = "Roman Moisieiev's 2025 LC Computer Science Coursework"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "pandas>=2.2.3",
+  "plotly>=6.0.0",
+  "statsmodels>=0.14.4",
+  "tqdm>=4.67.1",
+  "urllib3>=2.3.0",
+]

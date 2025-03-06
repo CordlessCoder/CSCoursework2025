@@ -12,3 +12,4 @@ raw_data/*
 
 # Ignore tooling cache
 **/.mypy_cache
+backend/postgres-data

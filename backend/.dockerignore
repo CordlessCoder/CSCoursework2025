@@ -1,0 +1,2 @@
+postgres-data
+DATABASE_URL=postgres://cscoursework:RomanMoisieiev@localhost/app

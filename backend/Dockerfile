@@ -1,4 +1,4 @@
-FROM rust:latest AS base
+FROM rust:1.85 AS base
 RUN cargo install sccache --version ^0.10
 RUN cargo install cargo-chef --version ^0.1
 ENV RUSTC_WRAPPER=sccache SCCACHE_DIR=/sccache

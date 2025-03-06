@@ -1,7 +1,24 @@
 window.plotting = {
   paper_bgcolor: "rgba(255,255,255, 0)",
   paper_fgcolor: "rgba(255,255,255, 0)",
+  plot_bgcolor: "rgba(255,255,255, 0)",
   draw_callbacks: {},
+  xaxis: {
+    linecolor: "rgba(68, 65, 61, 0.3)",
+    gridcolor: "rgba(68, 65, 61, 0.3)",
+  },
+  yaxis: {
+    linecolor: "rgba(68, 65, 61, 0.3)",
+    gridcolor: "rgba(68, 65, 61, 0.3)",
+  },
+  xaxis2: {
+    linecolor: "rgba(68, 65, 61, 0.3)",
+    gridcolor: "rgba(68, 65, 61, 0.3)",
+  },
+  yaxis2: {
+    linecolor: "rgba(68, 65, 61, 0.3)",
+    gridcolor: "rgba(68, 65, 61, 0.3)",
+  },
 };
 let data_callback = (id, data) => {
   let draw = () =>

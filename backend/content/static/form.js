@@ -1,8 +1,142 @@
+window.plotting = {
+  paper_bgcolor: "rgba(255,255,255, 0)",
+  paper_fgcolor: "rgba(255,255,255, 0)",
+  plot_bgcolor: "rgba(255,255,255, 0)",
+  draw_callbacks: {},
+  agree: 0,
+  disagree: 0,
+  age_histogram: {},
+};
+let data_callback = (id, data, redraw) => {
+  let draw = (force) => {
+    if (!force && redraw && !redraw()) {
+      return;
+    }
+    Plotly.react(
+      id,
+      data.data(),
+      { ...data.layout(), ...plotting },
+      { responsive: true },
+    );
+  };
+  draw();
+  window.plotting.draw_callbacks[id] = draw;
+};
+
+let width = window.screen.width;
+let wide = () => width >= 1100;
+
+const AGE_MIN = 15;
+const AGE_MAX = 80;
+const AGE_BUCKETS = 15;
+const BUCKET_WIDTH = (AGE_MAX - AGE_MIN) / (AGE_BUCKETS - 2);
+
 async function getreplies() {
   let reply_fetch = fetch("./list_replies?latest=5").then((res) => res.json());
+  let reply_stats = fetch(
+    `./stats?age_min=${AGE_MIN}&age_max=${AGE_MAX}&age_buckets=${AGE_BUCKETS}`,
+  ).then((res) => res.json());
   let reply_table = document.getElementById("replies");
   let row_count = reply_table.getElementsByTagName("tr").length;
   let replies = await reply_fetch;
+  data_callback(
+    "plots",
+    {
+      data: () => {
+        let new_x = [];
+        let new_y = [];
+        let new_text = [];
+        let new_width = [];
+        const bucket_width = window.plotting.age_histogram.bucket_width || 0;
+        for (const bucket of window.plotting.age_histogram.buckets || []) {
+          let x = bucket.start + bucket_width / 2;
+          if (bucket.start == null) {
+            x = bucket.end - bucket_width / 2;
+          }
+          let y = bucket.count;
+          let text = `${bucket.start ? bucket.start : ""}..${bucket.end ? bucket.end : ""}`;
+          new_x.push(x);
+          new_y.push(y);
+          new_text.push(text);
+          new_width.push(bucket_width);
+          console.log(x, y, text);
+        }
+        return [
+          {
+            values: [window.plotting.agree, window.plotting.disagree],
+            labels: ["Agree", "Disagree"],
+            textinfo: "label+percent",
+            textposition: "outside",
+            automargin: true,
+            type: "pie",
+            name: "Agree Statistics",
+          },
+          {
+            x: new_x,
+            y: new_y,
+            text: new_text,
+            width: new_width,
+            xaxis: "x2",
+            yaxis: "y2",
+            type: "bar",
+            name: "Respondent Age Statistics",
+          },
+        ];
+      },
+      layout: () => {
+        width = window.screen.width;
+        return {
+          // colorway: ["#f88a9e", "#92D7FF"],
+          colorway: ["#ae66fd", "#7680ff"],
+          newshape: { line: { color: "#ff0000" } },
+          title: {
+            text: "Reply Statistics(realtime)",
+          },
+          grid: {
+            rows: wide() ? 1 : 2,
+            columns: wide() ? 2 : 1,
+            pattern: "independent",
+          },
+          showlegend: false,
+          xaxis: {
+            anchor: "y",
+          },
+          xaxis2: {
+            anchor: "y2",
+            side: "bottom",
+            title: {
+              text: "Age (years)",
+            },
+            linecolor: "rgba(68, 65, 61, 0.3)",
+            gridcolor: "rgba(68, 65, 61, 0.3)",
+          },
+          yaxis: {
+            anchor: "x",
+            domain: [wide() ? 0 : 0.6, 1],
+          },
+          yaxis2: {
+            anchor: "x2",
+            overlaying: "y",
+            side: "right",
+            title: {
+              text: "Number of replies",
+            },
+            domain: [0, wide() ? 1 : 0.5],
+            linecolor: "rgba(68, 65, 61, 0.3)",
+            gridcolor: "rgba(68, 65, 61, 0.3)",
+          },
+        };
+      },
+    },
+    () => {
+      let old_wide = wide();
+      width = window.screen.width;
+      return old_wide != wide();
+    },
+  );
+  addEventListener("resize", () => {
+    Object.values(window.plotting.draw_callbacks).forEach((cb) => cb());
+  });
   console.log("Loaded replies", replies);
   while (row_count-- > 1) {
     reply_table.deleteRow(1);
@@ -19,6 +153,12 @@ async function getreplies() {
     cell1.innerText = data.age;
     cell2.innerText = data.agree ? "Yes" : "No";
   }
+  await reply_stats.then((data) => {
+    window.plotting.agree = data.agree.agree;
+    window.plotting.disagree = data.agree.disagree;
+    window.plotting.age_histogram = data.age_histogram;
+    Object.values(window.plotting.draw_callbacks).forEach((cb) => cb(true));
+  });
 }
 
 function startWebsocket() {
@@ -50,6 +190,41 @@ function startWebsocket() {
       let name = data.name;
       let age = data.age;
       let agree = data.agree;
+      if (agree) {
+        window.plotting.agree++;
+      } else {
+        window.plotting.disagree++;
+      }
+      let found = false;
+      for (let i = 0; i < window.plotting.age_histogram.buckets.length; i++) {
+        const bucket = window.plotting.age_histogram.buckets[i];
+        const above_start = !bucket.start || bucket.start <= age;
+        const below_end = !bucket.end || bucket.end >= age;
+        if (above_start && below_end) {
+          window.plotting.age_histogram.buckets[i].count++;
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        // We need to insert a new bucket
+        let start, end;
+        if (age < AGE_MIN) {
+          start = null;
+          end = AGE_MIN;
+        } else if (age > AGE_MAX) {
+          start = AGE_MAX;
+          end = null;
+        } else {
+          start = Math.floor(age / BUCKET_WIDTH) * BUCKET_WIDTH;
+          end = start + BUCKET_WIDTH;
+        }
+        window.plotting.age_histogram.buckets.push({
+          start: start,
+          end: end,
+          count: 1,
+        });
+      }
       console.log("New reply", name, age, agree);
       let reply_table = document.getElementById("replies");
       let row_count = reply_table.getElementsByTagName("tr").length;
@@ -65,6 +240,7 @@ function startWebsocket() {
       cell0.innerText = name;
       cell1.innerText = age;
       cell2.innerText = agree ? "Yes" : "No";
+      Object.values(window.plotting.draw_callbacks).forEach((cb) => cb(true));
     }
   };
 
@@ -83,15 +259,17 @@ function startWebsocket() {
     }
     // connection closed, discard old websocket and create a new one in 5s
     socket = null;
-    setTimeout(startWebsocket, 5000);
     // refetch replies
-    setTimeout(getreplies, 5000);
+    setTimeout(() => {
+      startWebsocket();
+      getreplies();
+    }, 5000);
   };
 }
 startWebsocket();
 
-let first_replies = getreplies();
 window.addEventListener("DOMContentLoaded", async function () {
+  let first_replies = getreplies();
   let form_name = document.getElementById("name");
   let form_age = document.getElementById("age");
   let form_agree = document.getElementById("agree");

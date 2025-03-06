@@ -1,4 +1,3 @@
-
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -17,6 +16,7 @@ pub struct Bucket {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Histogram {
     pub range: (f64, f64),
+    pub bucket_width: f64,
     pub buckets: Vec<Bucket>,
 }
 

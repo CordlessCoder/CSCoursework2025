@@ -6,9 +6,9 @@ use axum::{
     routing::{any, get, post},
 };
 use handlebars::Handlebars;
-use models::Reply;
+use models::{Histogram, Reply};
 use serde::{Deserialize, Serialize};
-use state::{AgeHistogramOptions, AppState};
+use state::{AgeHistogramOptions, AgreeStats, AppState, HistogramError};
 use std::{net::SocketAddr, sync::Arc};
 use tower_http::{
     services::ServeDir,
@@ -98,10 +98,20 @@ async fn stats(
     Query(hist_options): Query<AgeHistogramOptions>,
     State(state): State<Arc<AppState>>,
 ) -> impl IntoResponse {
-    let histogram = state.get_age_histogram(hist_options).await;
-    let histogram = match histogram {
+    #[derive(Debug, Serialize)]
+    struct Stats {
+        age_histogram: Histogram,
+        agree: AgreeStats,
+    }
+    let age_histogram = state.get_age_histogram(hist_options).await;
+    let age_histogram = match age_histogram {
         Ok(hist) => hist,
         Err(err) => return err.into_response(),
     };
-    Json(histogram).into_response()
+    let agree = state.get_agree_stats().await;
+    let stats = Stats {
+        age_histogram,
+        agree,
+    };
+    Json(stats).into_response()
 }

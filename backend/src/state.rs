@@ -13,11 +13,17 @@ pub struct AppState {
     pub reply_notifications: (broadcast::Sender<Utf8Bytes>, broadcast::Receiver<Utf8Bytes>),
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct AgeHistogramOptions {
     age_min: u32,
     age_max: u32,
     age_buckets: u32,
+}
+
+#[derive(Debug, Serialize, Clone)]
+pub struct AgreeStats {
+    disagree: u64,
+    agree: u64,
 }
 
 impl AppState {
@@ -67,6 +73,18 @@ impl AppState {
         .await
         .unwrap()
     }
+    pub async fn get_agree_stats(&self) -> AgreeStats {
+        let record = sqlx::query!(
+            "select count(*) as total, count(*) filter (where agree) as agreed from replies"
+        )
+        .fetch_one(&self.pool)
+        .await
+        .unwrap();
+        AgreeStats {
+            agree: record.agreed.unwrap_or(0) as u64,
+            disagree: record.total.unwrap_or(0) as u64 - record.agreed.unwrap_or(0) as u64,
+        }
+    }
     pub async fn get_age_histogram(
         &self,
         AgeHistogramOptions {
@@ -78,6 +96,7 @@ impl AppState {
         if age_buckets <= 2 {
             return Err(HistogramError::TooFewBuckets(age_buckets));
         };
+        let bucket_width = (age_max - age_min) as f64 / (age_buckets - 2) as f64;
         let buckets = sqlx::query!(
             "SELECT width_bucket(age, $1, $2, $3), count(*) FROM replies group by 1 order by 1",
             age_min as i32,
@@ -86,7 +105,6 @@ impl AppState {
         )
         .map(|r| {
             let bucket = r.width_bucket.unwrap_or(0) as u32;
-            let bucket_width = (age_max - age_min) as f64 / (age_buckets - 2) as f64;
             Bucket {
                 count: r.count.unwrap_or(0) as u64,
                 start: (bucket != 0).then(|| {
@@ -102,6 +120,7 @@ impl AppState {
         Ok(Histogram {
             range: (age_min as f64, age_max as f64),
             buckets,
+            bucket_width,
         })
     }
 }

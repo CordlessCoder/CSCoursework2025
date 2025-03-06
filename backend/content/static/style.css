@@ -7,6 +7,9 @@
   --secondary-button: #c8adf9;
   --secondary-button-fg: var(--primary);
   --accent: #f88a9e;
+  .primary-container.plot-container {
+    filter: invert(100%) hue-rotate(180deg);
+  }
 }
 [theme="dark"] {
   --primary: #fdf3e8;
@@ -18,7 +21,7 @@
   --secondary-button-fg: var(--secondary);
   --accent: #f88a9e;
 
-  .plot-container {
+  .plot-container:not(.plot-container) {
     filter: invert(100%) hue-rotate(180deg);
   }
 }
@@ -59,7 +62,9 @@
 .footer {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: 2em;
 }
 
 form {

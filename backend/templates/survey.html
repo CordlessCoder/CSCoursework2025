@@ -3,6 +3,7 @@
 <html>
   <head>
     {{> common_head}}
+    <script charset="utf-8" src="plotly-3.0.0.min.js"></script>
     <script type="module" src="form.js"></script>
   </head>
 
@@ -43,7 +44,7 @@
       There <span id="viewer_count_to_be">are</span> currently
       <span id="viewer_count">UNKNOWN visitors</span> on this page.
     </p>
-    <table id="replies" class="mintable secondary-container">
+    <table id="replies" class="mintable primary-container">
       <thead>
         <tr>
           <th>Name</th>
@@ -53,8 +54,10 @@
       </thead>
       <tbody></tbody>
     </table>
+    <div id="plots" class="primary-container" style="padding: 0"></div>
+
     <p class="subtitle">
-      The above table updates in real time with added entries. <br />
+      The above table and plots updates in real time with added entries. <br />
       Try it, it even works if you reply on another device!
     </p>
     {{> footer}}

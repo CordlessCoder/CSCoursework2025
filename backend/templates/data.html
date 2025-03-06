@@ -3,20 +3,29 @@
 <html>
   <head>
     {{> common_head}}
-    <script
-      charset="utf-8"
-      src="https://cdn.plot.ly/plotly-3.0.0.min.js"
-    ></script>
+    <script charset="utf-8" src="plotly-3.0.0.min.js"></script>
     <script type="module" src="plot_data.js"></script>
   </head>
 
   <body>
     {{> header}}
 
-    <div id="monthly_temp_plot"></div>
-    <div id="yearly_temp_plot"></div>
+    <div
+      id="monthly_temp_plot"
+      class="primary-container"
+      style="padding: 0"
+    ></div>
+    <div
+      id="yearly_temp_plot"
+      class="primary-container"
+      style="padding: 0"
+    ></div>
     <h3>{{color_temp_diff_to_mass}}</h3>
-    <div id="glacier_mass_temp_change_combined_plot"></div>
+    <div
+      id="glacier_mass_temp_change_combined_plot"
+      class="primary-container"
+      style="padding: 0"
+    ></div>
     {{> footer}}
   </body>
 </html>

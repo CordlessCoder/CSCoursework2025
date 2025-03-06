@@ -21,6 +21,7 @@ window.plotting = {
   },
 };
 let data_callback = (id, data) => {
+  console.log(data);
   let draw = () =>
     Plotly.react(
       id,
@@ -31,16 +32,17 @@ let data_callback = (id, data) => {
   draw();
   window.plotting.draw_callbacks[id] = draw;
 };
-await Promise.all([
-  fetch("./monthly_temp_plot.json")
+
+window.addEventListener("DOMContentLoaded", async function () {
+  await fetch("graphs_combined.json")
     .then((res) => res.json())
-    .then((data) => data_callback("monthly_temp_plot", data)),
-  fetch("./yearly_temp_plot.json")
-    .then((res) => res.json())
-    .then((data) => data_callback("yearly_temp_plot", data)),
-  fetch("./glacier_mass_temp_change_combined.json")
-    .then((res) => res.json())
-    .then((data) =>
-      data_callback("glacier_mass_temp_change_combined_plot", data),
-    ),
-]);
+    .then((data) => {
+      Object.keys(data)
+        // Needed to get around a bug which breaks drawing graphs
+        // when they're drawn in a pathological order
+        .sort((a, b) => a < b)
+        .forEach((name) => {
+          data_callback(name, data[name]);
+        });
+    });
+});

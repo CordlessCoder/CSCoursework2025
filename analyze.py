@@ -3,6 +3,7 @@ import pandas as pd
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
+import json
 
 
 def read_temperatures():
@@ -152,25 +153,24 @@ glacier_mass_temp_change_combined.update_yaxes(
 print("Rendering HTML.")
 
 
-def export_json(fig: go.Figure) -> str:
-    return fig.to_json()
-
-
 def write_to_file(data, name: str):
     with open(f"backend/content/{name}", "w", encoding="utf-8") as output_file:
         output_file.write(data)
 
 
 graphs = {
-    "static/glacier_mass_temp_change_combined.json": glacier_mass_temp_change_combined,
-    "static/yearly_temp_plot.json": yearly_temp_plot,
-    "static/monthly_temp_plot.json": monthly_temp_plot,
+    "glacier_mass_temp_change_combined_plot": glacier_mass_temp_change_combined,
+    "yearly_temp_plot": yearly_temp_plot,
+    "monthly_temp_plot": monthly_temp_plot,
 }
 
 # render plots
-for name, fig in graphs.items():
-    write_to_file(export_json(fig), name)
+graphs = {name: json.loads(data.to_json()) for (name, data) in graphs.items()}
 
+write_to_file(
+    json.dumps(graphs),
+    "static/graphs_combined.json",
+)
 
 # Record correlation coefficient
 write_to_file(

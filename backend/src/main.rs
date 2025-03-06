@@ -8,7 +8,7 @@ use axum::{
 use handlebars::Handlebars;
 use models::{Histogram, Reply};
 use serde::{Deserialize, Serialize};
-use state::{AgeHistogramOptions, AgreeStats, AppState, HistogramError};
+use state::{AgeHistogramOptions, AgreeStats, AppState};
 use std::{net::SocketAddr, sync::Arc};
 use tower_http::{
     services::ServeDir,

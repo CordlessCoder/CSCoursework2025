@@ -106,6 +106,10 @@ window.addEventListener("DOMContentLoaded", async function () {
   };
   form_age.oninput = function (_) {
     form_age.setCustomValidity("");
+    if (~form_age.value.indexOf("e")) {
+      form_age.setCustomValidity("Age cannot contain e notation");
+      return;
+    }
     if (form_age.value.length == 0) {
       form_age.setCustomValidity("Age cannot be empty");
       return;

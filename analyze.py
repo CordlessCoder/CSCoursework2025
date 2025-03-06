@@ -103,6 +103,9 @@ monthly_temp_plot = px.scatter(
 monthly_temp_plot.update_traces(visible="legendonly")
 monthly_temp_plot.data[-2].visible = True
 monthly_temp_plot.data[-1].visible = True
+monthly_temp_plot.update_layout(
+    legend=dict(orientation="h", y=1, yanchor="bottom", xanchor="left", x=0)
+)
 # st.plotly_chart(temp_plot, key=2)
 # st.write("##### Ireland Air Temperature(annual averages)")
 yearly_temp_plot = px.scatter(
@@ -121,6 +124,9 @@ yearly_temp_plot = px.scatter(
     trendline="lowess",
 )
 yearly_temp_plot.update_traces(visible="legendonly")
+yearly_temp_plot.update_layout(
+    legend=dict(orientation="h", y=1, yanchor="bottom", xanchor="left", x=0)
+)
 yearly_temp_plot.data[-2].visible = True
 yearly_temp_plot.data[-1].visible = True
 # st.plotly_chart(yearly_temp_plot, key=1)
@@ -148,6 +154,9 @@ glacier_mass_temp_change_combined.add_trace(
         name="Mean Annual Temperature (C°)",
     ),
     secondary_y=True,
+)
+glacier_mass_temp_change_combined.update_layout(
+    legend=dict(orientation="h", y=1, yanchor="bottom", xanchor="left", x=0)
 )
 glacier_mass_temp_change_combined.update_yaxes(
     title_text="Glacier Mass Lost",

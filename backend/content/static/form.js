@@ -12,7 +12,7 @@ let data_callback = (id, data, redraw) => {
     if (!force && redraw && !redraw()) {
       return;
     }
-    Plotly.react(
+    Plotly.newPlot(
       id,
       data.data(),
       { ...data.layout(), ...plotting },

@@ -23,7 +23,7 @@ window.plotting = {
 let data_callback = (id, data) => {
   console.log(id, data);
   let draw = () =>
-    Plotly.react(
+    Plotly.newPlot(
       id,
       data.data,
       { ...data.layout, ...plotting },

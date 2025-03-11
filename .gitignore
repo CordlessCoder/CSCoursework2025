@@ -2,6 +2,7 @@
 **/*.pdf
 # Ignore python bytecode cache files
 **/*.pyc
+__pycache__
 
 raw_data/*
 !raw_data/.keep

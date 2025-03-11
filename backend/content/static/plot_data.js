@@ -1,3 +1,22 @@
+const isObject = (x) =>
+  typeof x === "object" && !Array.isArray(x) && x !== null;
+
+function deepMerge(target, ...sources) {
+  if (!sources.length) return target;
+  const source = sources.shift();
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        deepMerge(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+  return deepMerge(target, ...sources);
+}
 window.plotting = {
   paper_bgcolor: "rgba(255,255,255, 0)",
   paper_fgcolor: "rgba(255,255,255, 0)",
@@ -30,12 +49,9 @@ window.plotting = {
 let data_callback = (id, data) => {
   console.log(id, data);
   let draw = () =>
-    Plotly.newPlot(
-      id,
-      data.data,
-      { ...data.layout, ...plotting },
-      { responsive: true },
-    );
+    Plotly.newPlot(id, data.data, deepMerge(plotting, data.layout), {
+      responsive: true,
+    });
   draw();
   window.plotting.draw_callbacks[id] = draw;
 };

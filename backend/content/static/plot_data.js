@@ -10,6 +10,9 @@ window.plotting = {
   yaxis: {
     linecolor: "rgba(68, 65, 61, 0.3)",
     gridcolor: "rgba(68, 65, 61, 0.3)",
+    title: {
+      text: "Glacier Mass Lost",
+    },
   },
   xaxis2: {
     linecolor: "rgba(68, 65, 61, 0.3)",
@@ -18,6 +21,10 @@ window.plotting = {
   yaxis2: {
     linecolor: "rgba(68, 65, 61, 0.3)",
     gridcolor: "rgba(68, 65, 61, 0.3)",
+    side: "right",
+    title: {
+      text: "Temperature",
+    },
   },
 };
 let data_callback = (id, data) => {

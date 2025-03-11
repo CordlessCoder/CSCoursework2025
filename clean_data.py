@@ -48,8 +48,15 @@ def read_glacier_mass_changes():
         return df.iloc[:-1]
 
 
-glacier_mass_changes = read_glacier_mass_changes()
-glacier_mass_changes.to_csv("clean_data/glacier_mass_changes.csv", date_format="%Y %m")
+def run_clean():
+    glacier_mass_changes = read_glacier_mass_changes()
+    glacier_mass_changes.to_csv(
+        "clean_data/glacier_mass_changes.csv", date_format="%Y %m"
+    )
 
-temperatures = read_temperatures()
-temperatures.to_csv("clean_data/temperatures.csv", date_format="%Y %m")
+    temperatures = read_temperatures()
+    temperatures.to_csv("clean_data/temperatures.csv", date_format="%Y %m")
+
+
+if __name__ == "__main__":
+    run_clean()

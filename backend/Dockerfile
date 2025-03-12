@@ -1,6 +1,7 @@
 FROM rust:1.85 AS base
-RUN cargo install sccache --version ^0.10
-RUN cargo install cargo-chef --version ^0.1
+RUN curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+RUN cargo binstall sccache --version ^0.10
+RUN cargo binstall cargo-chef --version ^0.1
 ENV RUSTC_WRAPPER=sccache SCCACHE_DIR=/sccache
  
 FROM base AS prepare

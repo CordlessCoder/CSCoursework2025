@@ -36,20 +36,6 @@ def run_analysis():
     temperatures = temperatures.reset_index()
     glacier_mass_changes = read_glacier_mass_changes()
     print("Preparing data for visualization.")
-    mean_temps = (
-        temperatures.groupby(
-            [
-                temperatures["Date"].dt.year,
-                temperatures["Statistic"],
-            ],
-            as_index=False,
-        )
-        .mean()
-        .set_index("Statistic")
-        .loc["Mean Temperature"]
-        .reset_index()
-        .drop(columns="Statistic")
-    )
     year_means = (
         temperatures.groupby(
             [
@@ -91,6 +77,7 @@ def run_analysis():
         y="Temperature (C°)",
         color="Statistic",
         trendline="lowess",
+        title="Monthly Temperatures",
     )
     monthly_temp_plot.update_traces(visible="legendonly")
     monthly_temp_plot.data[-2].visible = True
@@ -112,6 +99,7 @@ def run_analysis():
         y="Temperature (C°)",
         color="Statistic",
         trendline="lowess",
+        title="Yearly Temperatures",
     )
     yearly_temp_plot.update_traces(visible="legendonly")
     yearly_temp_plot.update_layout(
@@ -120,9 +108,7 @@ def run_analysis():
     yearly_temp_plot.data[-2].visible = True
     yearly_temp_plot.data[-1].visible = True
 
-    glacier_mass_temp_change_combined = make_subplots(
-        specs=[[{"secondary_y": True}]],
-    )
+    glacier_mass_temp_change_combined = make_subplots(specs=[[{"secondary_y": True}]])
     glacier_mass_temp_change_combined.add_trace(
         go.Bar(
             x=year_mass_change.index,
@@ -140,7 +126,8 @@ def run_analysis():
         secondary_y=True,
     )
     glacier_mass_temp_change_combined.update_layout(
-        legend=dict(orientation="h", y=1, yanchor="bottom", xanchor="left", x=0)
+        legend=dict(orientation="h", y=1, yanchor="bottom", xanchor="left", x=0),
+        title_text="Glacier Mass Lost and Yearly Temperatures Overlay",
     )
     glacier_mass_temp_change_combined.update_yaxes(
         title_text="Glacier Mass Lost",
@@ -172,7 +159,7 @@ def run_analysis():
 
     # Record correlation coefficient
     write_to_file(
-        f"Correlation coefficient between temperature and glacier mass lost: {corr_temp_diff_to_mass * 100:.4}%",
+        f"{corr_temp_diff_to_mass * 100:.4}%",
         "template_data/color_temp_diff_to_mass.txt",
     )
 

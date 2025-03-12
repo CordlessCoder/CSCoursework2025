@@ -1,0 +1,73 @@
+show_today: false
+# Either month or day
+viewport-snap: day
+# Can include `year`, `month`, `week`, or `day`
+headers:
+  - year
+  - month
+taskgroups:
+  - name: Investigation
+    tasks:
+      - name: Research Datasets
+        start: 2024-12-02
+        end: 2024-12-17
+        done: 2024-12-13
+      - name: Brainstorm Premise
+        start: 2024-12-13
+        end: 2024-12-24
+        done: 2024-12-23
+  - name: Plan & Design
+    tasks:
+      - name: Sketch Graphs
+        start: 2024-12-23
+        end: 2024-12-24
+        done: 2024-12-24
+      - name: Plan System Architecture
+        start: 2024-12-24
+        end: 2024-12-31
+        done: 2024-12-31
+  - name: Create
+    tasks:
+      - name: Data Downloader
+        start: 2025-01-03
+        end: 2025-01-14
+        done: 2025-01-10
+      - name: Data Cleaner
+        start: 2025-01-10
+        end: 2025-01-17
+        done: 2025-01-16
+      - name: Data Analysis
+        start: 2025-01-16
+        end: 2025-02-07
+        done: 2025-02-05
+      - name: Database
+        start: 2025-02-05
+        end: 2025-02-21
+        done: 2025-02-07
+      - name: Backend
+        start: 2025-02-07
+        end: 2025-02-21
+        done: 2025-02-12
+      - name: Frontend
+        start: 2025-02-12
+        end: 2025-02-28
+        done: 2025-02-26
+  - name: Evaluation
+    tasks:
+      - name: Data Analysis Pipeline
+        start: 2025-02-26
+        end: 2025-03-04
+        done: 2025-03-04
+      - name: Backend
+        start: 2025-03-04
+        end: 2025-03-07
+        done: 2025-03-07
+      - name: Frontend
+        start: 2025-03-07
+        end: 2025-03-12
+        done: 2025-03-10
+milestones:
+  - name: Hand-in
+    date: 2025-03-12
+  - name: Visualizations ready
+    date: 2025-02-05

@@ -49,9 +49,14 @@ window.plotting = {
 let data_callback = (id, data) => {
   console.log(id, data);
   let draw = () =>
-    Plotly.newPlot(id, data.data, deepMerge(plotting, data.layout), {
-      responsive: true,
-    });
+    Plotly.newPlot(
+      id,
+      data.data,
+      deepMerge(Object.assign({}, plotting), data.layout),
+      {
+        responsive: true,
+      },
+    );
   draw();
   window.plotting.draw_callbacks[id] = draw;
 };

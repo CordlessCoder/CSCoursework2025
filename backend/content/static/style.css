@@ -4,7 +4,7 @@
   --tertiary: #bebee0;
   --tertiary-border: #9393c6;
   --primary-button: #9a9af9;
-  --primary-button-fg: var(--secondary);
+  --primary-button-fg: var(--primary);
   --secondary-button: #c8adf9;
   --secondary-button-fg: var(--primary);
   --accent: #f88a9e;

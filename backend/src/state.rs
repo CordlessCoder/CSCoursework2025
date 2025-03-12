@@ -75,7 +75,7 @@ impl AppState {
     }
     pub async fn get_agree_stats(&self) -> AgreeStats {
         let record = sqlx::query!(
-            "select count(*) as total, count(*) filter (where agree) as agreed from replies"
+            "SELECT count(*) AS total, count(*) FILTER (WHERE agree) AS agreed FROM replies"
         )
         .fetch_one(&self.pool)
         .await

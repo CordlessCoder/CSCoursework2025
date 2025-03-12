@@ -9,26 +9,55 @@
 
   <body>
     {{> header}}
-
+    <p class="subtitle">
+      Let's start by plotting the monthly temperatures in Ireland in 1958-2022.
+    </p>
     <div
       id="monthly_temp_plot"
       class="primary-container"
       style="padding: 0"
     ></div>
+    <p class="subtitle">
+      The LOWESS trendline shows a clear increase from 9.5&#176C; to
+      10.4&#176C;, but the temperature varies a lot month-to-month. <br />
+      Let's try to compensate for that by averaging the temperature over each
+      year.
+    </p>
     <div
       id="yearly_temp_plot"
       class="primary-container"
       style="padding: 0"
     ></div>
-    <h3>
-      Correlation coefficient between temperature and glacier mass lost:
-      {{color_temp_diff_to_mass}}
-    </h3>
+    <p class="subtitle">
+      Now the trend is far more clear. <br />
+      Can we find a correlation between this temperature trend, and the rate at
+      which glaciers are melting?
+    </p>
     <div
       id="glacier_mass_temp_change_combined_plot"
       class="primary-container"
       style="padding: 0"
     ></div>
+    <p class="subtitle">
+      This is an overlay of the two graphs we're trying to find a correlation
+      between. Both show a rather pronounced upward trend. <br />
+      But can we show this correlation in numbers? <br />
+      A great tool for this kind of analysis is the Pearson correlation
+      coefficient.
+    </p>
+    <h3>
+      Plugging the two datasets into the correlation function, the resulting
+      correlation coefficint is {{color_temp_diff_to_mass}}.
+    </h3>
+    <p class="subtitle">
+      This shows that there is a strong correlation between the temperature in
+      Ireland, and the rate at which glaciers are melting globally!
+    </p>
+    <p class="subtitle">
+      Now that you are familiar with my findings, I'd appreciate it if you
+      responded to
+      <a href="/survey" class="color-gradient">my survey</a>.
+    </p>
     {{> footer}}
   </body>
 </html>

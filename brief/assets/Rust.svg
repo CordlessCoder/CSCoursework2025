@@ -1,0 +1,154 @@
+<svg version="1.1" height="106" width="106" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="logo" transform="translate(53, 53)">
+  <path id="r" transform="translate(0.5, 0.5)" stroke="black" stroke-width="1" stroke-linejoin="round" d="     M -9,-15 H 4 C 12,-15 12,-7 4,-7 H -9 Z     M -40,22 H 0 V 11 H -9 V 3 H 1 C 12,3 6,22 15,22 H 40     V 3 H 34 V 5 C 34,13 25,12 24,7 C 23,2 19,-2 18,-2 C 33,-10 24,-26 12,-26 H -35     V -15 H -25 V 11 H -40 Z"/>
+  <g id="gear" mask="url(#holes)">
+    <circle r="43" fill="none" stroke="black" stroke-width="9"/>
+    <g id="cogs">
+      <polygon id="cog" stroke="black" stroke-width="3" stroke-linejoin="round" points="46,3 51,0 46,-3"/>
+      <use xlink:href="#cog" transform="rotate(11.25)"/>
+      <use xlink:href="#cog" transform="rotate(22.50)"/>
+      <use xlink:href="#cog" transform="rotate(33.75)"/>
+      <use xlink:href="#cog" transform="rotate(45.00)"/>
+      <use xlink:href="#cog" transform="rotate(56.25)"/>
+      <use xlink:href="#cog" transform="rotate(67.50)"/>
+      <use xlink:href="#cog" transform="rotate(78.75)"/>
+      <use xlink:href="#cog" transform="rotate(90.00)"/>
+      <use xlink:href="#cog" transform="rotate(101.25)"/>
+      <use xlink:href="#cog" transform="rotate(112.50)"/>
+      <use xlink:href="#cog" transform="rotate(123.75)"/>
+      <use xlink:href="#cog" transform="rotate(135.00)"/>
+      <use xlink:href="#cog" transform="rotate(146.25)"/>
+      <use xlink:href="#cog" transform="rotate(157.50)"/>
+      <use xlink:href="#cog" transform="rotate(168.75)"/>
+      <use xlink:href="#cog" transform="rotate(180.00)"/>
+      <use xlink:href="#cog" transform="rotate(191.25)"/>
+      <use xlink:href="#cog" transform="rotate(202.50)"/>
+      <use xlink:href="#cog" transform="rotate(213.75)"/>
+      <use xlink:href="#cog" transform="rotate(225.00)"/>
+      <use xlink:href="#cog" transform="rotate(236.25)"/>
+      <use xlink:href="#cog" transform="rotate(247.50)"/>
+      <use xlink:href="#cog" transform="rotate(258.75)"/>
+      <use xlink:href="#cog" transform="rotate(270.00)"/>
+      <use xlink:href="#cog" transform="rotate(281.25)"/>
+      <use xlink:href="#cog" transform="rotate(292.50)"/>
+      <use xlink:href="#cog" transform="rotate(303.75)"/>
+      <use xlink:href="#cog" transform="rotate(315.00)"/>
+      <use xlink:href="#cog" transform="rotate(326.25)"/>
+      <use xlink:href="#cog" transform="rotate(337.50)"/>
+      <use xlink:href="#cog" transform="rotate(348.75)"/>
+    </g>
+    <g id="mounts">
+      <polygon id="mount" stroke="black" stroke-width="6" stroke-linejoin="round" points="-7,-42 0,-35 7,-42"/>
+      <use xlink:href="#mount" transform="rotate(72)"/>
+      <use xlink:href="#mount" transform="rotate(144)"/>
+      <use xlink:href="#mount" transform="rotate(216)"/>
+      <use xlink:href="#mount" transform="rotate(288)"/>
+    </g>
+  </g>
+  <mask id="holes">
+    <rect x="-60" y="-60" width="120" height="120" fill="white"/>
+    <circle id="hole" cy="-40" r="3"/>
+    <use xlink:href="#hole" transform="rotate(72)"/>
+    <use xlink:href="#hole" transform="rotate(144)"/>
+    <use xlink:href="#hole" transform="rotate(216)"/>
+    <use xlink:href="#hole" transform="rotate(288)"/>
+  </mask>
+</g>
+<script xmlns="">{
+            document.currentScript.dataset.injected = true;
+            const o = JSON.parse(decodeURIComponent(escape(atob('eyJ1c2VyQWdlbnQiOiJNb3ppbGxhLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvMTE0LjAuMC4wIFNhZmFyaS81MzcuMzYgRWRnLzExNC4wLjE3ODguMCIsImFwcFZlcnNpb24iOiI1LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzExNC4wLjAuMCBTYWZhcmkvNTM3LjM2IEVkZy8xMTQuMC4xNzg4LjAiLCJwbGF0Zm9ybSI6IldpbmRvd3MiLCJ2ZW5kb3IiOiJHb29nbGUgSW5jLiIsInByb2R1Y3QiOiJHZWNrbyIsIm9zY3B1IjoiW2RlbGV0ZV0iLCJidWlsZElEIjoiW2RlbGV0ZV0iLCJwcm9kdWN0U3ViIjoiMjAwMzAxMDciLCJ1c2VyQWdlbnREYXRhQnVpbGRlciI6eyJwIjp7InVhIjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzExNC4wLjAuMCBTYWZhcmkvNTM3LjM2IEVkZy8xMTQuMC4xNzg4LjAiLCJicm93c2VyIjp7Im5hbWUiOiJFZGdlIiwidmVyc2lvbiI6IjExNC4wLjE3ODguMCIsIm1ham9yIjoiMTE0In0sImVuZ2luZSI6eyJuYW1lIjoiQmxpbmsiLCJ2ZXJzaW9uIjoiMTE0LjAuMC4wIn0sIm9zIjp7Im5hbWUiOiJXaW5kb3dzIiwidmVyc2lvbiI6IjEwIn0sImRldmljZSI6e30sImNwdSI6eyJhcmNoaXRlY3R1cmUiOiJhbWQ2NCJ9fSwidWEiOiJNb3ppbGxhLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvMTE0LjAuMC4wIFNhZmFyaS81MzcuMzYgRWRnLzExNC4wLjE3ODguMCJ9fQ=='))));
+
+            if (o.userAgentDataBuilder) {
+              const v = new class NavigatorUAData {
+                #p;
+
+                constructor({p, ua}) {
+                  this.#p = p;
+
+                  const version = p.browser.major;
+                  const name = p.browser.name === 'Chrome' ? 'Google Chrome' : p.browser.name;
+
+                  this.brands = [{
+                    brand: name,
+                    version
+                  }, {
+                    brand: 'Chromium',
+                    version
+                  }, {
+                    brand: 'Not=A?Brand',
+                    version: '24'
+                  }];
+
+                  this.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+
+                  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-CH-UA-Platform
+                  this.platform = 'Unknown';
+                  if (p.os &amp;&amp; p.os.name) {
+                    const name = p.os.name.toLowerCase();
+                    if (name.includes('mac')) {
+                      this.platform = 'macOS';
+                    }
+                    else if (name.includes('debian')) {
+                      this.platform = 'Linux';
+                    }
+                    else {
+                      this.platform = p.os.name;
+                    }
+                  }
+                }
+                toJSON() {
+                  return {
+                    brands: this.brands,
+                    mobile: this.mobile,
+                    platform: this.platform
+                  };
+                }
+                getHighEntropyValues(hints) {
+                  if (!hints || Array.isArray(hints) === false) {
+                    return Promise.reject(Error("Failed to execute 'getHighEntropyValues' on 'NavigatorUAData'"));
+                  }
+
+                  const r = this.toJSON();
+
+                  if (hints.includes('architecture')) {
+                    r.architecture = this.#p?.cpu?.architecture || 'x86';
+                  }
+                  if (hints.includes('bitness')) {
+                    r.bitness = '64';
+                  }
+                  if (hints.includes('model')) {
+                    r.model = '';
+                  }
+                  if (hints.includes('platformVersion')) {
+                    r.platformVersion = this.#p?.os?.version || '10.0.0';
+                  }
+                  if (hints.includes('uaFullVersion')) {
+                    r.uaFullVersion = this.brands[0].version;
+                  }
+                  if (hints.includes('fullVersionList')) {
+                    r.fullVersionList = this.brands;
+                  }
+                  return Promise.resolve(r);
+                }
+              }(o.userAgentDataBuilder);
+
+              navigator.__defineGetter__('userAgentData', () =&gt; {
+                return v;
+              });
+            }
+            delete o.userAgentDataBuilder;
+
+            for (const key of Object.keys(o)) {
+              if (o[key] === '[delete]') {
+                delete Object.getPrototypeOf(window.navigator)[key];
+              }
+              else {
+                navigator.__defineGetter__(key, () =&gt; {
+                  if (o[key] === 'empty') {
+                    return '';
+                  }
+                  return o[key];
+                });
+              }
+            }
+          }</script></svg>

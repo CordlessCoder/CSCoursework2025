@@ -2,7 +2,7 @@
 #import "@preview/wordometer:0.1.4": word-count-of
 #show: doc(
     header: [_Computer Science Project_],
-    // theme: "tokyonight",
+    theme: "light",
     heading_numbering: "1.1.",
     attributed: [TODO: Exam number here],
     // theme: "light",
@@ -76,7 +76,7 @@ To connect the backend to the database I chose #link("https://github.com/launchb
         ),
         inset: 4pt,
         stroke: teal,
-        fill: teal.lighten(90%),
+        fill: teal.lighten(80%),
     ),
 	node((0,0), [Data Downloader], corner-radius: 2pt),
 	edge("-|>", label: "Raw data"),

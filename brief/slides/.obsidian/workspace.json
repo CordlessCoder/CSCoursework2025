@@ -1,0 +1,202 @@
+{
+  "main": {
+    "id": "767f87fb252249cd",
+    "type": "split",
+    "children": [
+      {
+        "id": "265bc499b471e5da",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e3aa54c4a61b519b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Global warming.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Global warming"
+            }
+          }
+        ]
+      },
+      {
+        "id": "97f993742b5654d7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c6bb09b80c0674e4",
+            "type": "leaf",
+            "state": {
+              "type": "reveal-preview-view",
+              "state": {},
+              "icon": "slides",
+              "title": "Preview: Global warming.md"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "85127fe6babdab26",
+    "type": "split",
+    "children": [
+      {
+        "id": "4177fa70dfe69f82",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1433ab607a60195c",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "d12e045b6a90002a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "c942a0012931ce79",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "3ee68d99b30ce67b",
+    "type": "split",
+    "children": [
+      {
+        "id": "86e2dfe8a5d1a8e7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7410c059acb0d2a5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Global warming.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Global warming"
+            }
+          },
+          {
+            "id": "0ee83e02915b5c62",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Global warming.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Global warming"
+            }
+          },
+          {
+            "id": "501e95f8e48384c3",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "9223c2cc3532d179",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Global warming.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Global warming"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "slides-extended:Show slide preview": false
+    }
+  },
+  "active": "c6bb09b80c0674e4",
+  "lastOpenFiles": [
+    "Pasted image 20250313171358.png",
+    "Pasted image 20250313171113.png",
+    "Pasted image 20250313163523.png",
+    "wgms_darktheme_logol.png",
+    "Global warming.md",
+    "Pasted image 20250313162646.png",
+    "Pasted image 20250313161959.png",
+    "Pasted image 20250313162643.png",
+    "Pasted image 20250313162504.png",
+    "Pasted image 20250313162156.png",
+    "Welcome.md"
+  ]
+}

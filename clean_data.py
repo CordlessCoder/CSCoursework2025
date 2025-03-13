@@ -2,6 +2,13 @@
 import pandas as pd
 
 
+def print_markdown(df):
+    print(r"```")
+    print(df.reset_index().describe())
+    print(r"```")
+    print("\n---")
+
+
 def read_temperatures():
     with open("raw_data/MTM02_Temperature.csv", "r") as file:
         df = pd.read_csv(
@@ -10,6 +17,8 @@ def read_temperatures():
             parse_dates=["Month"],
             date_format="%YM%m",
         )
+        print("## Before cleaning")
+        print_markdown(df)
         df.index.names = ["Date", "Statistic"]
         df.drop(
             [
@@ -23,29 +32,34 @@ def read_temperatures():
             inplace=True,
         )
         df.rename(columns={"VALUE": "Temperature"}, inplace=True)
-        return (
+        df = (
             df[df["Temperature"].notna()]
             .groupby(["Date", "Statistic"])
             .Temperature.mean()
         )
+        print("# After cleaning")
+        print_markdown(df)
+        return df
 
 
 def read_glacier_mass_changes():
     with open("raw_data/DOI-WGMS-FoG-2024-01/data/mass_balance.csv", "r") as file:
-        df = (
-            pd.read_csv(
-                file,
-                index_col=["YEAR"],
-                parse_dates=["YEAR"],
-                date_format="%Y",
-            )
-            .groupby("YEAR")
-            .ANNUAL_BALANCE.sum()
+        df = pd.read_csv(
+            file,
+            index_col=["YEAR"],
+            parse_dates=["YEAR"],
+            date_format="%Y",
         )
+        print("## Before cleaning")
+        print_markdown(df)
+        df = df.groupby("YEAR").ANNUAL_BALANCE.sum()
         df.index.names = ["Date"]
         df.name = "Change"
         # Drop empty data for 2024
-        return df.iloc[:-1]
+        df = df.iloc[:-1]
+        print("## After cleaning")
+        print_markdown(df)
+        return df
 
 
 def run_clean():

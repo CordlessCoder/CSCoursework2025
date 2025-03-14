@@ -24,11 +24,11 @@
         ]
       },
       {
-        "id": "97f993742b5654d7",
+        "id": "9519463182c935dd",
         "type": "tabs",
         "children": [
           {
-            "id": "c6bb09b80c0674e4",
+            "id": "b333dae9ed58537a",
             "type": "leaf",
             "state": {
               "type": "reveal-preview-view",
@@ -185,7 +185,7 @@
       "slides-extended:Show slide preview": false
     }
   },
-  "active": "c6bb09b80c0674e4",
+  "active": "b333dae9ed58537a",
   "lastOpenFiles": [
     "Pasted image 20250313171358.png",
     "Pasted image 20250313171113.png",

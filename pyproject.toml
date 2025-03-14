@@ -8,6 +8,8 @@ requires-python = ">=3.13"
 dependencies = [
   "pandas>=2.2.3",
   "plotly>=6.0.0",
+  "scikit-learn>=1.6.1",
+  "scipy>=1.15.2",
   "statsmodels>=0.14.4",
   "tqdm>=4.67.1",
   "urllib3>=2.3.0",

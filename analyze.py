@@ -4,6 +4,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 import plotly.express as px
 import json
+from sklearn.linear_model import LinearRegression
 
 
 def read_temperatures():
@@ -26,6 +27,26 @@ def read_glacier_mass_changes():
             date_format="%Y %m",
         ).sort_index()
         return df
+
+
+# Returns the extrapolated temperature increase by 2050
+def extrapolate_temperatures(df):
+    model = LinearRegression()
+    df["ordinal"] = df.index.map(pd.Timestamp.toordinal)
+    x = df[["ordinal"]]
+    y = df["Temperature"]
+
+    # Train the model
+    model.fit(x, y)
+
+    model.score(x, y)
+    baseline = (
+        model.intercept_ + model.coef_[0] * pd.Timestamp("1900-01-01T12").toordinal()
+    )
+    temp_in_2050 = (
+        model.intercept_ + model.coef_[0] * pd.Timestamp("2050-01-01T12").toordinal()
+    )
+    return temp_in_2050 - baseline
 
 
 print("Reading datasets from disk.")
@@ -151,6 +172,20 @@ def run_analysis():
 
     # render plots
     graphs = {name: json.loads(data.to_json()) for (name, data) in graphs.items()}
+
+    # extrapolate monthly tempearatures
+    temp_increase_by_2050 = extrapolate_temperatures(year_means)
+
+    # check for large anomalous increase in temperature
+
+    warning = ""
+
+    if temp_increase_by_2050 > 1.5:
+        warning = f"The predicted temperature increase by 2050 is very high! {temp_increase_by_2050:.3}°C."
+    write_to_file(
+        warning,
+        "template_data/temp_warning.txt",
+    )
 
     write_to_file(
         json.dumps(graphs),

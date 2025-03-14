@@ -47,6 +47,12 @@ async fn main() {
             "/survey",
             get(Html(template::render_page(&mut handlebars, "survey").await)),
         )
+        .route(
+            "/recommendations",
+            get(Html(
+                template::render_page(&mut handlebars, "recommendations").await,
+            )),
+        )
         .route("/reply", post(add_reply))
         .route("/list_replies", get(list_latest_replies))
         .route("/stats", get(stats))

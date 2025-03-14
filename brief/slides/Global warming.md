@@ -1,4 +1,4 @@
-##### Exam number: TODO
+##### Exam number: 248786
 I have decided to investigate the topic of global warming, and specifically how it can be shown using Irish data.
 
 ---
@@ -12,24 +12,26 @@ I also wanted to show the correlation between the temperature and a known effect
 
 I took inspiration from some existing interactive information systems I found on the internet:
 ---
-The Central Statistics Office
+ 
+  - ![[Pasted image 20250313161959.png]]
 
-  ![[Pasted image 20250313161959.png]]
----
-The NASA Vital Signs Page
-  ![[Pasted image 20250313162156.png]]
-  
----
 - Our World in Data
 - WorldData.info
 - Kaggle
-
+---
+The NASA Vital Signs Page
+  ![[Pasted image 20250313162156.png|800]]
+  
 ---
 World Glacier Monitoring Service
 
 ![[wgms_darktheme_logol.png]]
+Fluctuations of Glaciers (FoG) Database
+
 ---
 ![[Pasted image 20250313163523.png]]
+MTM02 - Temperature
+
 ---
 
 ![[Pasted image 20250313171358.png]]

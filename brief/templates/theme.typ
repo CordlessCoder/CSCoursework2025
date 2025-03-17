@@ -27,21 +27,23 @@
         theme
     }
 
-    let apply_theme(content, theme_data) = [
+    let apply_theme(content, theme_data) = context [
         #set par(linebreaks: "optimized", justify: true)
-        #set page(
-            header: [
-            #header
-            #h(1fr)
-            #attributed
-        ],
-            margin: page_margin,
-            footer: [#footer #h(1fr) #if page_numbering != none {
-            context counter(page).display(page_numbering)
-        }],
-            numbering: "1",
-            fill: theme_data.base,
-        )
+        #if target() != "html" {
+            set page(
+                header: [
+                #header
+                #h(1fr)
+                #attributed
+            ],
+                margin: page_margin,
+                footer: [#footer #h(1fr) #if page_numbering != none {
+                context counter(page).display(page_numbering)
+            }],
+                numbering: "1",
+                fill: theme_data.base,
+            )
+        }
         #set text(fill: theme_data.text, font: font, size: size)
         #set table(fill: theme_data.overlay, stroke: theme_data.text)
         #set circle(stroke: theme_data.subtle, fill: theme_data.overlay)

@@ -2,6 +2,8 @@
     import "themes/light.typ": theme
     theme
 }
+
+#let target = dictionary(std).at("target", default: () => "paged")
 #let current_theme = state("theme", default_theme)
 #let with_cur_theme(cb) = context {
     let theme = current_theme.get()
